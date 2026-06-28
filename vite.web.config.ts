@@ -8,7 +8,24 @@ export default defineConfig({
   // Why: pairing URLs may live under a reverse-proxy path prefix like
   // /orca/web-index.html, so built assets must resolve relative to the page.
   base: './',
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      name: 'redirect-to-web-index',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const url = new URL(req.url || '', `http://${req.headers.host || 'localhost'}`)
+          if (url.pathname === '/' || url.pathname === '/index.html') {
+            res.writeHead(302, { Location: `/web-index.html${url.search}` })
+            res.end()
+            return
+          }
+          next()
+        })
+      }
+    }
+  ],
   define: {
     ORCA_FEATURE_WALL_ENABLED: 'true'
   },

@@ -1,2 +1,12 @@
 #!/usr/bin/env sh
-pnpm exec lint-staged
+# Fallback to corepack/npx if global pnpm is not in PATH (e.g. Git Bash on Windows).
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm exec lint-staged
+elif command -v corepack >/dev/null 2>&1; then
+  corepack pnpm exec lint-staged
+elif command -v npx >/dev/null 2>&1; then
+  npx pnpm exec lint-staged
+else
+  echo "Error: Neither pnpm, corepack, nor npx was found in PATH." >&2
+  exit 1
+fi
