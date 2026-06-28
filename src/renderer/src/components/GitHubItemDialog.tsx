@@ -7133,6 +7133,9 @@ export default function GitHubItemDialog({
                 number: workItem.number
               })
             }
+            useAppStore
+              .getState()
+              .evictGitHubRepoCaches(effectiveRepoId ?? workItem.repoId, repoPath ?? undefined)
           }}
           assignees={details?.assignees ?? []}
           onUse={onUse}
@@ -7219,6 +7222,12 @@ export default function GitHubItemDialog({
                             number: workItem.number
                           })
                         }
+                        useAppStore
+                          .getState()
+                          .evictGitHubRepoCaches(
+                            effectiveRepoId ?? workItem.repoId,
+                            repoPath ?? undefined
+                          )
                       }}
                       assignees={details?.assignees ?? []}
                       onUse={onUse}

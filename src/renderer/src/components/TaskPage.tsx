@@ -1196,9 +1196,7 @@ function GHStatusCell({
             )
             return
           }
-          if (repo) {
-            useAppStore.getState().evictGitHubRepoCaches(repo.id, repo.path)
-          }
+          useAppStore.getState().evictGitHubRepoCaches(item.repoId, repo?.path)
           useAppStore.getState().recordFeatureInteraction('github-tasks')
         })
         .catch(() => {
